@@ -1,0 +1,17 @@
+//Tambien se puede configurar babel e un archivo independiente
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "chrome": "58",
+          "ie": "11",
+          "esmodules": true
+        }
+      }
+    ]
+  ],
+
+  "plugins": ["@babel/plugin-transform-runtime"]
+}
