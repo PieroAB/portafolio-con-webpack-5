@@ -1,3 +1,3 @@
 # Webpack 5
 
-Portafolio personal usando Vanilla JS y Webpack 5 inculuyendo loaders y plugins
+Portafolio personal usando Vanilla JS y Webpack 5 incluyendo loaders y plugins
