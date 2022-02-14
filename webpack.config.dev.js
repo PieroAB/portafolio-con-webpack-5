@@ -8,6 +8,8 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const ProgressPlugin = require("progress-webpack-plugin");
 
@@ -15,8 +17,13 @@ const ProgressPlugin = require("progress-webpack-plugin");
 /* autocompletado para nuestro archivo de webpack */
 
 module.exports = {
+  // ANALIZAR PARTICULARIDADES DE LO QUE ESTÁ COMPILANDO NUESTRO PROYECTO
+  //devtool: "source-map",
+
   mode: "development", // LE INDICO EL MODO EXPLICITAMENTE
+
   entry: "./src/index.js", // el punto de entrada de mi aplicación
+
   output: {
     // Esta es la salida de mi bundle
     path: path.resolve(__dirname, "dist"),
@@ -168,7 +175,40 @@ module.exports = {
 
     // COMPLEMENTO WEBPACK SIMPLE QUE MUESTRA UN BUEN PROGRESO CUANDO SE CONSTRUYE.
     new ProgressPlugin(true),
+
+    // REVISAR SU IMPACTO EN TAMAÑO POR ESE MOTIVO WEBPACK NOS OFRECE UN PAQUETE PARA PODER VERIFICAR Y ANALIZAR EL TAMAÑO DEL BUNDLE FINAL.
+    new BundleAnalyzerPlugin({
+      analyzerMode: "static", //para que lo haga sólo al momento de hacer el build
+      openAnalyzer: true, //para que nos muestre el resultado inmediatamente
+    }),
   ],
+  devServer: {
+    static: {
+      //DÍGALE AL SERVIDOR DESDE DÓNDE SERVIR EL CONTENIDO. ESTO SOLO ES NECESARIO SI DESEA SERVIR ARCHIVOS ESTÁTICOS
+      directory: path.join(__dirname, "dist"),
+
+      //ESTÁ HABILITADO DE FORMA PREDETERMINADA Y LOS CAMBIOS DE ARCHIVO ACTIVARÁN UNA RECARGA DE PÁGINA COMPLETA
+      watch: true,
+    },
+    client: {
+      // IMPRIME EL PROGRESO DE COMPILACIÓN EN PORCENTAJE EN EL NAVEGADOR
+      progress: true,
+    },
+    // OBSERVA LOS CAMBIOS EN TODOS NUESTROS ARCHIVOS Y ACTUALIZA EL NAVEGADOR
+    watchFiles: path.join(__dirname, "./**"),
+
+    // HABILITA LA COMPRESION GZIP PARA LOS ARCHIVOS
+    compress: true,
+
+    // AL USAR LA API DE HISTORIAL DE HTML5 , ES PROBABLE QUE LA INDEX.HTMLPÁGINA DEBA PUBLICARSE EN LUGAR DE CUALQUIER 404RESPUESTA.
+    historyApiFallback: true,
+
+    // PUERTO LOCALHOST
+    port: 3006,
+
+    // HACE QUE SE ABRA EL NAVEGADOR
+    open: true,
+  },
 
   optimization: {
     minimize: true,

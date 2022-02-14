@@ -26,6 +26,7 @@ module.exports = {
       "@images": path.resolve(__dirname, "src/assets/images/"),
     },
   },
+  mode: "production",
   module: {
     rules: [
       {
